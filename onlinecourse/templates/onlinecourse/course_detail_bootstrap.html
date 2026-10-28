@@ -9,7 +9,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <!-- Navigation bar -->
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -38,7 +37,6 @@
         </div>
     </nav>
 
-    <!-- Page content -->
     <div class="container-fluid">
         <h2>{{ course.name }}</h2>
 
@@ -63,13 +61,13 @@
                     {% csrf_token %}
                     {% for question in course.question_set.all %}
                         <div class="card mt-1">
-                            <div class="card-header"><h5>{{ question.content }}</h5></div>
+                            <div class="card-header"><h5>{{ question.question_text }}</h5></div>
                             <div class="card-body">
                                 {% for choice in question.choice_set.all %}
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input type="checkbox" name="choice_{{ choice.id }}" class="form-check-input" value="{{ choice.id }}">
-                                            {{ choice.content }}
+                                            {{ choice.choice_text }}
                                         </label>
                                     </div>
                                 {% endfor %}
