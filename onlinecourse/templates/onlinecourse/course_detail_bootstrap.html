@@ -28,7 +28,7 @@
                         {% csrf_token %}
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Username" name="username" >
-                            <input type="password" class="form-control" placeholder="Username" name="psw" >
+                            <input type="password" class="form-control" placeholder="Password" name="psw" >
                             <button class="btn btn-primary" type="submit">Login</button>
                             <a class="btn btn-link" href="{% url 'onlinecourse:registration' %}">Sign Up</a>
                         </div>
@@ -50,7 +50,31 @@
                     </div>
                 {% endfor %}
             </div>
-            <!-- Course detail template changes go here -->
+
+            <!-- Exam Form -->
+            {% if user.is_authenticated %}
+            <form id="question-form" action="{% url 'onlinecourse:submit' course.id %}" method="post">
+                {% csrf_token %}
+                {% for lesson in course.lesson_set.all %}
+                    {% for question in lesson.question_set.all %}
+                    <div class="card mt-1">
+                        <div class="card-header"><h5>{{ question.question_text }}</h5></div>
+                        <div class="card-body">
+                            {% for choice in question.choice_set.all %}
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="choice_{{ question.id }}" class="form-check-input" value="{{ choice.id }}">
+                                    {{ choice.choice_text }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+                <input class="btn btn-primary btn-block mt-3" type="submit" value="Submit Exam">
+            </form>
+            {% endif %}
     </div>
 </body>
 </html>
