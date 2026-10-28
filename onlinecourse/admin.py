@@ -14,7 +14,7 @@ class QuestionInline(admin.StackedInline):
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
-    list_display = ['content', 'grade']  # Required for full 3/3 points
+    list_display = ['content', 'grade']
 
 
 class LessonInline(admin.StackedInline):

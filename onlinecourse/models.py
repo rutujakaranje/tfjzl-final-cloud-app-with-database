@@ -60,6 +60,9 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     content = models.TextField()
 
+    def __str__(self):
+        return self.title
+
 
 class Enrollment(models.Model):
     AUDIT = 'audit'
@@ -77,9 +80,7 @@ class Enrollment(models.Model):
     rating = models.FloatField(default=5.0)
 
 
-# Question Model
 class Question(models.Model):
-    # Foreign key to Course as required by rubric
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     content = models.CharField(max_length=200)
     grade = models.IntegerField(default=5)
@@ -87,7 +88,6 @@ class Question(models.Model):
     def __str__(self):
         return "Question: " + self.content
 
-    # Method to calculate score based on selected choice IDs
     def is_get_score(self, selected_ids):
         all_answers = self.choice_set.filter(is_correct=True).count()
         selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
@@ -96,10 +96,8 @@ class Question(models.Model):
         return False
 
 
-# Choice Model
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    # Must be max_length=100 as required by rubric
     content = models.CharField(max_length=100)
     is_correct = models.BooleanField(default=False)
 
@@ -107,11 +105,9 @@ class Choice(models.Model):
         return "Choice: " + self.content
 
 
-# Submission Model
 class Submission(models.Model):
     enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
     choices = models.ManyToManyField(Choice)
 
-    # Added __str__ method required by rubric
     def __str__(self):
         return f"Submission {self.id} for {self.enrollment.user.username}"
